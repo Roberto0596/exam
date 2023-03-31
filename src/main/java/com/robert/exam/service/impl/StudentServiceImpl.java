@@ -72,7 +72,7 @@ public class StudentServiceImpl implements StudentService {
         log.info("Request {}", student);
         ResponseTO<Student> responseTO = new ResponseTO<>();
         try {
-            Student instance = new Student();
+            var instance = new Student();
 
             if (student.getId() != null) {
                 log.info("se verifica si existe el alumno");

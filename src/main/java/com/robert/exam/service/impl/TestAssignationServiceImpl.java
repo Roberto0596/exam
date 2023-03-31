@@ -167,6 +167,7 @@ public class TestAssignationServiceImpl  implements TestAssignationService {
             }
 
             Optional<ZoneTime> timeZone = timeRepository.findById(requestTO.getZone_id());
+
             if(timeZone.isEmpty()) {
                 responseTO.setCode(1003);
                 responseTO.setMessage("La zona horaria no existe");
