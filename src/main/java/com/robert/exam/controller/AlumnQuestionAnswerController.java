@@ -23,8 +23,8 @@ public class AlumnQuestionAnswerController {
         return alumnQuestionAsnwerService.get(id);
     }
 
-    @GetMapping("/evaluate")
-    public ResponseEntity<ResponseTO> get(@RequestParam Long alumnId, @RequestParam Long testId) {
+    @PostMapping("/evaluate")
+    public ResponseEntity<ResponseTO> evaluate(@RequestParam Long alumnId, @RequestParam Long testId) {
         return alumnQuestionAsnwerService.evaluate(alumnId, testId);
     }
 
