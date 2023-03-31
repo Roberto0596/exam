@@ -48,13 +48,15 @@ public class TestAssignationServiceImpl  implements TestAssignationService {
     public ResponseEntity<ResponseTO> getAll() {
         ResponseTO<List<TestAssignation>> responseTO = new ResponseTO<>();
         List<TestAssignation> instances = (List<TestAssignation>) testAssignationRepository.findAll();
-        responseTO.setResource(instances);
+
         if(instances.isEmpty()) {
             responseTO.setCode(1001);
             responseTO.setMessage("No hay registros por mostrar");
+            responseTO.setResource(null);
             return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
         }
 
+        responseTO.setResource(instances);
         responseTO.setCode(1000);
         responseTO.setMessage("consulta realizada correctamente");
         return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
@@ -66,7 +68,7 @@ public class TestAssignationServiceImpl  implements TestAssignationService {
 
         Optional<TestAssignation> instance = testAssignationRepository.findById(id);
 
-        if (!instance.isPresent()) {
+        if (instance.isEmpty()) {
             responseTO.setCode(1001);
             responseTO.setMessage("No se encontró el registro solicitado");
             responseTO.setResource(null);
@@ -95,7 +97,7 @@ public class TestAssignationServiceImpl  implements TestAssignationService {
         responseTO.setCode(1000);
         responseTO.setMessage("Consulta realizada correctamente");
         responseTO.setResource(instance);
-        log.info("se enviará {}", responseTO);
+
         return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
     }
 
@@ -208,10 +210,17 @@ public class TestAssignationServiceImpl  implements TestAssignationService {
     @Override
     public ResponseEntity<ResponseTO> delete(long id) {
         ResponseTO<Test> responseTO = new ResponseTO<>();
-        testAssignationRepository.deleteById(id);
-        responseTO.setCode(1000);
-        responseTO.setMessage("Eliminado realizado exitosamente");
-        responseTO.setResource(null);
+        try {
+            testAssignationRepository.deleteById(id);
+            responseTO.setCode(1000);
+            responseTO.setMessage("Eliminado realizado exitosamente");
+            responseTO.setResource(null);
+        } catch (Exception e) {
+            log.info("Ocurrio una incidencia {}", e);
+            responseTO.setCode(1005);
+            responseTO.setMessage("No se pudo eliminar el registro");
+            responseTO.setResource(null);
+        }
         return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
     }
 }

@@ -34,13 +34,14 @@ public class AlumnQuestionAsnwerServiceImpl implements AlumnQuestionAsnwerServic
     public ResponseEntity<ResponseTO> getAll() {
         ResponseTO<List<AlumnQuestionAnswer>> responseTO = new ResponseTO<>();
         List<AlumnQuestionAnswer> instances = (List<AlumnQuestionAnswer>) alumnQuestionAnswerRepository.findAll();
-        responseTO.setResource(instances);
+
         if(instances.isEmpty()) {
             responseTO.setCode(1001);
             responseTO.setMessage("No hay registros por mostrar");
+            responseTO.setResource(null);
             return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
         }
-
+        responseTO.setResource(instances);
         responseTO.setCode(1000);
         responseTO.setMessage("consulta realizada correctamente");
         return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
@@ -52,7 +53,7 @@ public class AlumnQuestionAsnwerServiceImpl implements AlumnQuestionAsnwerServic
 
         Optional<AlumnQuestionAnswer> instance = alumnQuestionAnswerRepository.findById(id);
 
-        if (!instance.isPresent()) {
+        if (instance.isEmpty()) {
             responseTO.setCode(1001);
             responseTO.setMessage("No se encontró el registro solicitado");
             responseTO.setResource(null);
@@ -69,6 +70,7 @@ public class AlumnQuestionAsnwerServiceImpl implements AlumnQuestionAsnwerServic
     public ResponseEntity<ResponseTO> evaluate(Long studentId, Long testId) {
         ResponseTO<List<TestAssignation>> responseTO = new ResponseTO<>();
 
+
         List<TestAssignation> instance = testAssignationRepository.getByAlumnAndTest(studentId, testId);
 
         if (instance.isEmpty()) {
@@ -79,16 +81,21 @@ public class AlumnQuestionAsnwerServiceImpl implements AlumnQuestionAsnwerServic
         }
 
         instance.forEach(item -> {
-            Double totalPoints = item.getAlumnQuestionAnswers().stream()
-                    .filter(f -> f.getTestQuestion().getCorrectOption() == f.getAnswer())
-                    .mapToDouble(aux -> aux.getTestQuestion().getValue()).sum();
+            try {
+                Double totalPoints = item.getAlumnQuestionAnswers().stream()
+                        .filter(f -> f.getTestQuestion().getCorrectOption() == f.getAnswer())
+                        .mapToDouble(aux -> aux.getTestQuestion().getValue()).sum();
 
-            item.setGeneral_qualification(totalPoints);
-            testAssignationRepository.save(item);
+                item.setGeneral_qualification(totalPoints);
+                testAssignationRepository.save(item);
+            } catch (Exception e) {
+                log.info("Ocurrio una incidencia", e);
+                log.info("Registro afectado {}", item);
+            }
         });
 
         responseTO.setCode(1000);
-        responseTO.setMessage("Consulta realizada correctamente");
+        responseTO.setMessage("Se calificó correctamente");
         responseTO.setResource(instance);
         return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
     }
@@ -139,6 +146,7 @@ public class AlumnQuestionAsnwerServiceImpl implements AlumnQuestionAsnwerServic
             responseTO.setResource(instance);
             return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
         } catch (Exception e) {
+            log.info("Ocurrio una incidencia {}", e);
             responseTO.setResource(null);
             responseTO.setMessage("Ocurrio un error al guardar");
             responseTO.setCode(1005);
@@ -149,10 +157,18 @@ public class AlumnQuestionAsnwerServiceImpl implements AlumnQuestionAsnwerServic
     @Override
     public ResponseEntity<ResponseTO> delete(long id) {
         ResponseTO<Test> responseTO = new ResponseTO<>();
-        alumnQuestionAnswerRepository.deleteById(id);
-        responseTO.setCode(1000);
-        responseTO.setMessage("Eliminado realizado exitosamente");
-        responseTO.setResource(null);
+
+        try {
+            alumnQuestionAnswerRepository.deleteById(id);
+            responseTO.setCode(1000);
+            responseTO.setMessage("Eliminado realizado exitosamente");
+            responseTO.setResource(null);
+        } catch (Exception e) {
+            log.info("Ocurrio una incidencia {}", e);
+            responseTO.setCode(1005);
+            responseTO.setMessage("No se pudo eliminar el registro");
+            responseTO.setResource(null);
+        }
         return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
     }
 }

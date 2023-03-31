@@ -38,16 +38,19 @@ public class TestServiceImpl implements TestService {
         log.info("se inicia flujo de obtener todos los examenes");
         ResponseTO<List<Test>> responseTO = new ResponseTO<>();
         List<Test> instances = (List<Test>) testRepositoty.findAll();
-        responseTO.setResource(instances);
+
         if(instances.isEmpty()) {
             log.info("no existen examenes");
             responseTO.setCode(1001);
             responseTO.setMessage("No hay registros por mostrar");
+            responseTO.setResource(null);
             return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
         }
+
         log.info("flujo terminado correctamente");
         responseTO.setCode(1000);
         responseTO.setMessage("consulta realizada correctamente");
+        responseTO.setResource(instances);
         return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
     }
 
@@ -57,7 +60,7 @@ public class TestServiceImpl implements TestService {
 
         Optional<Test> instance = testRepositoty.findById(id);
 
-        if (!instance.isPresent()) {
+        if (instance.isEmpty()) {
             responseTO.setCode(1001);
             responseTO.setMessage("No se encontró el registro solicitado");
             responseTO.setResource(null);
@@ -86,21 +89,22 @@ public class TestServiceImpl implements TestService {
                 if (op.isPresent()) {
                     instance = op.get();
                 } else {
+                    log.info("Se ingreso un id, pero no existe el examen");
                     instance.setCreated_at(new Date(System.currentTimeMillis()));
                 }
             }
+
             instance.setName(request.getTest().getName());
 
-            log.info("se guarda el examen");
             instance = testRepositoty.save(instance);
 
             if(request.getTestQuestions() != null) {
                 log.info("trae preguntas se procede a guardar");
                 List<TestQuestion> instancesQuestion = new ArrayList<>();
 
-                Test finalInstance = instance;
+                var finalInstance = instance;
                 request.getTestQuestions().forEach(item -> {
-                    TestQuestion auxTestQuestion = new TestQuestion();
+                    var auxTestQuestion = new TestQuestion();
                     Optional<TestQuestion> testQuestionSaved = testQuestionRepository.findById(item.getId() != null ? item.getId() : 0);
 
                     if (testQuestionSaved.isPresent()) {
@@ -134,7 +138,7 @@ public class TestServiceImpl implements TestService {
             responseTO.setResource(null);
             responseTO.setMessage("Ocurrio un error al guardar");
             responseTO.setCode(1005);
-            return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
         }
 
     }
@@ -142,10 +146,15 @@ public class TestServiceImpl implements TestService {
     @Override
     public ResponseEntity<ResponseTO> delete(long id) {
         ResponseTO<Test> responseTO = new ResponseTO<>();
-        testRepositoty.deleteById(id);
-        responseTO.setCode(1000);
-        responseTO.setMessage("Eliminado realizado exitosamente");
-        responseTO.setResource(null);
+        try {
+            testRepositoty.deleteById(id);
+            responseTO.setCode(1000);
+            responseTO.setMessage("Eliminado realizado exitosamente");
+        } catch (Exception e) {
+            log.info("Ocurrio una incidencia {}", e);
+            responseTO.setCode(1000);
+            responseTO.setMessage("El registro no pudo ser eliminado");
+        }
         return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
     }
 }

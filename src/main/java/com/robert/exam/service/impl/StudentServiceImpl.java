@@ -33,13 +33,15 @@ public class StudentServiceImpl implements StudentService {
     public ResponseEntity<ResponseTO> getAll() {
         ResponseTO<List<Student>> responseTO = new ResponseTO<>();
         List<Student> instances = (List<Student>) studentRepository.findAll();
-        responseTO.setResource(instances);
+
         if(instances.isEmpty()) {
             responseTO.setCode(1001);
             responseTO.setMessage("No hay registros por mostrar");
+            responseTO.setResource(null);
             return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
         }
 
+        responseTO.setResource(instances);
         responseTO.setCode(1000);
         responseTO.setMessage("consulta realizada correctamente");
         return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
@@ -51,7 +53,7 @@ public class StudentServiceImpl implements StudentService {
 
         Optional<Student> instance = studentRepository.findById(id);
 
-        if (!instance.isPresent()) {
+        if (instance.isEmpty()) {
             responseTO.setCode(1001);
             responseTO.setMessage("No se encontró el registro solicitado");
             responseTO.setResource(null);
@@ -120,10 +122,16 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public ResponseEntity<ResponseTO> delete(long id) {
         ResponseTO<Test> responseTO = new ResponseTO<>();
-        studentRepository.deleteById(id);
-        responseTO.setCode(1000);
-        responseTO.setMessage("Eliminado realizado exitosamente");
-        responseTO.setResource(null);
+        try {
+            studentRepository.deleteById(id);
+            responseTO.setCode(1000);
+            responseTO.setMessage("Eliminado realizado exitosamente");
+            responseTO.setResource(null);
+        } catch (Exception e) {
+            responseTO.setCode(1005);
+            responseTO.setMessage("No se pudo eliminar el registro");
+            responseTO.setResource(null);
+        }
         return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
     }
 }
