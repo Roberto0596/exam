@@ -72,7 +72,7 @@ public class StudentServiceImpl implements StudentService {
         log.info("Request {}", student);
         ResponseTO<Student> responseTO = new ResponseTO<>();
         try {
-            Student instance = new Student();
+            var instance = new Student();
 
             if (student.getId() != null) {
                 log.info("se verifica si existe el alumno");
@@ -81,12 +81,10 @@ public class StudentServiceImpl implements StudentService {
                 if (op.isPresent()) {
                     log.info("el alumno existe");
                     instance = op.get();
-                } else {
-                    log.info("el alumno es nuevo");
-                    instance.setCreated_at(new Date(System.currentTimeMillis()));
                 }
-            } else {
-                log.info("el alumno es nuevo");
+            }
+
+            if(instance.getCreated_at() == null) {
                 instance.setCreated_at(new Date(System.currentTimeMillis()));
             }
 

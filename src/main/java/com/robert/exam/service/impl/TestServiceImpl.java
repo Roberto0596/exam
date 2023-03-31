@@ -80,18 +80,16 @@ public class TestServiceImpl implements TestService {
         try {
             var instance = new Test();
 
-            if(request.getTest().getId() == null) {
-                log.info("examen nuevo");
-                instance.setCreated_at(new Date(System.currentTimeMillis()));
-            } else {
+            if(request.getTest().getId() != null) {
                 log.info("no es nuevo, buscando");
                 Optional<Test> op = testRepositoty.findById(request.getTest().getId());
                 if (op.isPresent()) {
                     instance = op.get();
-                } else {
-                    log.info("Se ingreso un id, pero no existe el examen");
-                    instance.setCreated_at(new Date(System.currentTimeMillis()));
                 }
+            }
+
+            if(instance.getCreated_at() == null) {
+                instance.setCreated_at(new Date(System.currentTimeMillis()));
             }
 
             instance.setName(request.getTest().getName());

@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
+import java.util.UUID;
 
 @Component
 public class Helper {
@@ -27,7 +28,9 @@ public class Helper {
 
     public void sendEmail(TestAssignation instance, String subject) throws EmailException  {
         String zone = instance.getStudent().getTimeZone() != null ? instance.getStudent().getTimeZone().getName() : instance.getTimeZone().getName();
+
         String realDate = getDateByTimeZone(zone, String.valueOf(instance.getApplicationDate()));
+
         log.info("fecha {}", realDate);
         instance.setAlumnAplicationDate(Timestamp.valueOf(realDate));
 
@@ -54,6 +57,11 @@ public class Helper {
 
             instance.setSended(1);
         }
+    }
+
+    public String getUUID() {
+        final String non = UUID.randomUUID().toString();
+        return non.replace("-", "");
     }
 
     public String getDateByTimeZone(String timeZone, String stringDate) {
