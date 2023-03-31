@@ -27,6 +27,7 @@ public class AlumnQuestionAnswer {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "test_question_id")
+    @JsonIgnore
     private TestQuestion testQuestion;
 
     @Column
