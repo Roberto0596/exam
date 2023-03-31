@@ -70,7 +70,6 @@ public class AlumnQuestionAsnwerServiceImpl implements AlumnQuestionAsnwerServic
     public ResponseEntity<ResponseTO> evaluate(Long studentId, Long testId) {
         ResponseTO<List<TestAssignation>> responseTO = new ResponseTO<>();
 
-
         List<TestAssignation> instance = testAssignationRepository.getByAlumnAndTest(studentId, testId);
 
         if (instance.isEmpty()) {
@@ -110,10 +109,10 @@ public class AlumnQuestionAsnwerServiceImpl implements AlumnQuestionAsnwerServic
                 Optional<AlumnQuestionAnswer> op = alumnQuestionAnswerRepository.findById(Long.valueOf(requestTO.getId()));
                 if (op.isPresent()) {
                     instance = op.get();
-                } else {
-                    instance.setCreated_at(new Date(System.currentTimeMillis()));
                 }
-            } else {
+            }
+
+            if(instance.getCreated_at() == null) {
                 instance.setCreated_at(new Date(System.currentTimeMillis()));
             }
 

@@ -125,16 +125,16 @@ public class TestAssignationServiceImpl  implements TestAssignationService {
         log.info("request {}", requestTO);
         ResponseTO<TestAssignation> responseTO = new ResponseTO<>();
         try {
-            TestAssignation instance = new TestAssignation();
+            var instance = new TestAssignation();
 
             if (requestTO.getId() != null) {
                 Optional<TestAssignation> op = testAssignationRepository.findById(Long.parseLong(requestTO.getId()));
                 if (op.isPresent()) {
                     instance = op.get();
-                } else {
-                    instance.setCreated_at(new Date(System.currentTimeMillis()));
                 }
-            } else {
+            }
+
+            if(instance.getCreated_at() == null) {
                 instance.setCreated_at(new Date(System.currentTimeMillis()));
             }
 
@@ -152,7 +152,7 @@ public class TestAssignationServiceImpl  implements TestAssignationService {
             Optional<Test> test = testRepositoty.findById(requestTO.getTest_id());
 
             if(test.isEmpty()) {
-                responseTO.setCode(1002);
+                responseTO.setCode(1001);
                 responseTO.setMessage("El examen no existe");
                 responseTO.setResource(null);
                 return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
@@ -169,7 +169,7 @@ public class TestAssignationServiceImpl  implements TestAssignationService {
             Optional<ZoneTime> timeZone = timeRepository.findById(requestTO.getZone_id());
 
             if(timeZone.isEmpty()) {
-                responseTO.setCode(1003);
+                responseTO.setCode(1001);
                 responseTO.setMessage("La zona horaria no existe");
                 responseTO.setResource(null);
                 return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
@@ -178,7 +178,7 @@ public class TestAssignationServiceImpl  implements TestAssignationService {
             instance.setTimeZone(timeZone.get());
 
             if (requestTO.getApplicationDate() == null) {
-                responseTO.setCode(1005);
+                responseTO.setCode(1003);
                 responseTO.setMessage("La fecha de aplicacion del examen es requerida");
                 return new ResponseEntity<ResponseTO>(responseTO, HttpStatus.OK);
             }

@@ -81,12 +81,10 @@ public class StudentServiceImpl implements StudentService {
                 if (op.isPresent()) {
                     log.info("el alumno existe");
                     instance = op.get();
-                } else {
-                    log.info("el alumno es nuevo");
-                    instance.setCreated_at(new Date(System.currentTimeMillis()));
                 }
-            } else {
-                log.info("el alumno es nuevo");
+            }
+
+            if(instance.getCreated_at() == null) {
                 instance.setCreated_at(new Date(System.currentTimeMillis()));
             }
 
