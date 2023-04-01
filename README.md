@@ -37,6 +37,9 @@ con esto se calificará al alumno en ese examen de forma automatica.
 
 más detalles en la documentación de swagger.
 
+De igual forma, por normas del examen, adjunto la coleccion de postman que usé para hacer pruebas.
+
+
 Saludos =)
 
 

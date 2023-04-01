@@ -1,0 +1,479 @@
+{
+	"info": {
+		"_postman_id": "b0df8094-91c5-45da-9395-f8fdd291bee4",
+		"name": "Examen",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9560805"
+	},
+	"item": [
+		{
+			"name": "Obtener alumno por id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/prueba/v1/student/get/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prueba",
+						"v1",
+						"student",
+						"get",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Guardar examen",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"test\": {\r\n        \"id\": 9,\r\n        \"name\": \"examen de programacion 4\"\r\n    },\r\n    \"testQuestions\": [\r\n        {\r\n            \"id\":16,\r\n            \"question\": \"¿cuanto es dos mas dos?\",\r\n            \"answer1\": \"4\",\r\n            \"answer2\": \"234\",\r\n            \"answer3\": \"34\",\r\n            \"answer4\": \"34\",\r\n            \"value\": 100.0,\r\n            \"correctOption\": 1,\r\n            \"created_at\": null\r\n        },\r\n        {\r\n            \"id\": 17,\r\n            \"question\": \"¿cuanto es dos mas tres?\",\r\n            \"answer1\": \"5\",\r\n            \"answer2\": \"234\",\r\n            \"answer3\": \"34\",\r\n            \"answer4\": \"34\",\r\n            \"value\": 100.0,\r\n            \"correctOption\": 1,\r\n            \"created_at\": null\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/prueba/v1/test/save",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prueba",
+						"v1",
+						"test",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Guardar alumno",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 56,\r\n    \"name\": \"escaleno\",\r\n    \"lastname\": \"cordero\",\r\n    \"age\": \"25\",\r\n    \"email\": \"sonico242503@gmail.com\",\r\n    \"timeZoneId\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/prueba/v1/student/save",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prueba",
+						"v1",
+						"student",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener zonas horarias",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"America/Lima\",\r\n    \"created_at\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/prueba/v1/zonetime/get",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prueba",
+						"v1",
+						"zonetime",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener asignaciones de examen",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"student_id\": 1,\r\n            \"test_id\": 1,\r\n            \"general_qualification\": null,\r\n            \"sended\": 0,\r\n            \"created_at\": null,\r\n            \"applicationDate\": \"2023-04-11 23:17:21\",\r\n            \"zone_id\": 1\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/prueba/v1/test-assignation/get",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prueba",
+						"v1",
+						"test-assignation",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Guardar asignacion",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 10,\r\n    \"student_id\": 19,\r\n    \"test_id\": 2,\r\n    \"general_qualification\": 100,\r\n    \"zone_id\": 1,\r\n    \"applicationDate\": \"2023-04-11 23:17:21\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/prueba/v1/test-assignation/save",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prueba",
+						"v1",
+						"test-assignation",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener resultados de un alumno",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/prueba/v1/test-assignation/alumn-result/all?alumnId=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prueba",
+						"v1",
+						"test-assignation",
+						"alumn-result",
+						"all"
+					],
+					"query": [
+						{
+							"key": "alumnId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Guardar una respuesta de alumno",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 2,\r\n    \"testAssignationId\": 6,\r\n    \"testQuestionId\": 2,\r\n    \"answer\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/prueba/v1/answer-alumn/save",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prueba",
+						"v1",
+						"answer-alumn",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener resultados por examen",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
+				"url": {
+					"raw": "http://localhost:8080/prueba/v1/answer-alumn/evaluate?alumnId=2&testId=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prueba",
+						"v1",
+						"answer-alumn",
+						"evaluate"
+					],
+					"query": [
+						{
+							"key": "alumnId",
+							"value": "2"
+						},
+						{
+							"key": "testId",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener alumnos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/prueba/v1/student/get",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prueba",
+						"v1",
+						"student",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar alumno",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/prueba/v1/student/delete/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prueba",
+						"v1",
+						"student",
+						"delete",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar examen",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/prueba/v1/test/delete/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prueba",
+						"v1",
+						"test",
+						"delete",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar zona horaria",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/prueba/v1/zonetime/delete/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prueba",
+						"v1",
+						"zonetime",
+						"delete",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar asignacion",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/prueba/v1/test-assignation/delete/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prueba",
+						"v1",
+						"test-assignation",
+						"delete",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Guardar asignacion",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"string\",\r\n  \"student_id\": 0,\r\n  \"test_id\": 0,\r\n  \"zone_id\": 0,\r\n  \"general_qualification\": 0,\r\n  \"applicationDate\": \"string\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/prueba/v1/test-assignation/save",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prueba",
+						"v1",
+						"test-assignation",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Evaluar alumno",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/prueba/v1/answer-alumn/evaluate?alumnId=1&testId=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prueba",
+						"v1",
+						"answer-alumn",
+						"evaluate"
+					],
+					"query": [
+						{
+							"key": "alumnId",
+							"value": "1"
+						},
+						{
+							"key": "testId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
